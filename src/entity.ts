@@ -22,6 +22,8 @@ export default abstract class Entity {
         const BlindActuatorEntity = require('./entityTypes/blindActuator.js').default;
         const AirTemperatureEntity = require('./entityTypes/airTemperature.js').default;
         const BinarySensorEntity = require('./entityTypes/binarySensor.js').default;
+        const FanEntity = require('./entityTypes/fan.js').default;
+        const ButtonEntity = require('./entityTypes/button.js').default;
 
         // Determine the entity type from the entity ID prefix
         // Entity IDs follow the format: "domain.entity_name"
@@ -33,9 +35,15 @@ export default abstract class Entity {
                     return new OnOffEntity(entity, ctx);
                 else
                     return new DimActuatorEntity(entity, ctx);
+            case 'fan':
+                return new FanEntity(entity, ctx);
+            case 'button':
+            case 'input_button':
+                return new ButtonEntity(entity, ctx);
             case 'cover':
                 return new BlindActuatorEntity(entity, ctx);
             case 'switch':
+            case 'input_boolean':
                 return new OnOffEntity(entity, ctx);
             case 'binary_sensor':
                 return new BinarySensorEntity(entity, ctx);

@@ -7,6 +7,8 @@ This add-on for the Busch Jaeger SysAP integrates Home Assistant entities into t
 
 - switch
 - light (on/off and dimmable but no color control)
+- fan (on/off and speed percentage)
+- input_button & button (push-button / press trigger)
 - binary_sensor
 - sensor (temperature only)
 - cover (not fully tested yet)
