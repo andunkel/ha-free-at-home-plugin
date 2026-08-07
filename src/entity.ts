@@ -39,6 +39,9 @@ export default abstract class Entity {
                 return new FanEntity(entity, ctx);
             case 'button':
             case 'input_button':
+            case 'scene':
+            case 'script':
+            case 'automation':
                 return new ButtonEntity(entity, ctx);
             case 'cover':
                 return new BlindActuatorEntity(entity, ctx);
