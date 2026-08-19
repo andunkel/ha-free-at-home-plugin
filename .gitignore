@@ -3,4 +3,5 @@ build/
 node_modules/
 .npmrc
 *.tar
+*.tar.gz
 .env

@@ -1,6 +1,6 @@
 {
   "name": "ha-free-at-home-plugin",
-  "version": "1.0.0",
+  "version": "1.3.2",
   "description": "",
   "main": "main.js",
   "scripts": {
@@ -13,6 +13,7 @@
     "typecheck": "tsc -p . --noEmit",
     "prepack": "npm run buildProd",
     "pack": "free-at-home-cli buildscriptarchive build",
+    "packGz": "npm run pack && gzip -f *.tar",
     "journal": ". ./.env && free-at-home-cli journal --filterAddon",
     "monitorstate": ". ./.env && free-at-home-cli addonapplicationstate --clear",
     "monitorconfig": ". ./.env && free-at-home-cli addonconfiguration --clear"

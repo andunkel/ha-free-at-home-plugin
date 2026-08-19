@@ -7,9 +7,26 @@ This add-on for the Busch Jaeger SysAP integrates Home Assistant entities into t
 
 - switch
 - light (on/off and dimmable but no color control)
+- fan (on/off and speed percentage)
+- input_button & button (push-button / press trigger)
+- scene (triggers `scene.turn_on`)
+- script (triggers `script.turn_on`)
+- automation (triggers `automation.trigger`)
 - binary_sensor
 - sensor (temperature only)
 - cover (not fully tested yet)
+
+### Buttons, Scenes, Scripts & Automations
+
+Entities with domains `button`, `input_button`, `scene`, `script`, and `automation` are integrated as virtual push-buttons in Free@Home:
+- **`button` & `input_button`**: Calls `press` service (`button.press` / `input_button.press`).
+- **`scene` & `script`**: Calls `turn_on` service (`scene.turn_on` / `script.turn_on`).
+- **`automation`**: Calls `trigger` service (`automation.trigger`).
+
+**Features:**
+- **Multi-Source Detection**: Listens for high-level channel state events (`isOnChanged`), raw input datapoints (`inputDatapointChanged`), and Free@Home scenes (`sceneTriggered`).
+- **Bounce Protection**: Built-in 300ms debouncing filters out rapid press/release bounces from physical push-buttons.
+- **Feedback Loop Prevention**: Status updates coming back from Home Assistant are ignored for 1000ms after a Free@Home press to avoid unnecessary double-pulsing.
 
 ## How to Use
 This Addon is a personal experimental project.
