@@ -17,7 +17,7 @@ class HomeAssistant {
 
     connection: Connection = undefined as unknown as Connection;
     private managedEntities: Entity[] = [];
-    private unsubscribeManagedEntityChanges: (() => void) | undefined = undefined;
+    private entityChangeCleanupHandler: (() => void) | undefined = undefined;
 
     async testCredentials(url: string, token: string): Promise<boolean> {
         try {
@@ -150,14 +150,14 @@ class HomeAssistant {
             throw new Error("Home Assistant connection is not established.");
         }
 
-        if (this.unsubscribeManagedEntityChanges) {
+        if (this.entityChangeCleanupHandler) {
             console.log("Unsubscribing from previous managed entity changes");
-            this.unsubscribeManagedEntityChanges();
+            this.entityChangeCleanupHandler();
         }
         console.log("Subscribing to managed entity changes");
 
         // Subscribe to all entity updates
-        this.unsubscribeManagedEntityChanges = subscribeEntities(this.connection, (hassEntities: HassEntities) => {
+        this.entityChangeCleanupHandler = subscribeEntities(this.connection, (hassEntities: HassEntities) => {
             // Check each managed entity for changes
             for (const managedEntity of this.managedEntities) {
                 const hassEntity = hassEntities[managedEntity.id];
@@ -167,6 +167,23 @@ class HomeAssistant {
                 }
             }
         });
+    }
+
+    async unsubscribeManagedEntityChanges(): Promise<void>
+    {
+        if (this.entityChangeCleanupHandler)
+        {
+            this.entityChangeCleanupHandler()
+            this.entityChangeCleanupHandler = undefined;
+        }
+    }
+
+    async destroy(): Promise<void>
+    {
+        await this.unsubscribeManagedEntityChanges();
+        this.connection?.close();
+        this.connection = undefined as unknown as Connection;
+        this.managedEntities = [];
     }
 }
 

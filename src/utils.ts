@@ -59,6 +59,21 @@ export interface Configuration extends AddOn.Configuration {
         items: {
             label: string;
             labelRefreshInterval: number;
+            updateRefreshInterval: number
         }
     };
+}
+
+export class Interval {
+    intervalId: NodeJS.Timeout
+    constructor(callback: () => {}, delay?: number) {
+        callback()
+        this.intervalId = setInterval(callback, delay)
+    }
+
+    clear() {
+        if (this.intervalId) {
+            clearInterval(this.intervalId)
+        }
+    }
 }
